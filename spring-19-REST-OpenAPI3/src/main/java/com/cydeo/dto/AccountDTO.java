@@ -3,8 +3,9 @@ package com.cydeo.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +24,6 @@ public class AccountDTO {
     private String postalCode;
 
     @JsonBackReference  // This field is not going to be serialized
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserDTO user;
 
 }

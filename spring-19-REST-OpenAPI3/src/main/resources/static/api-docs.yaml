@@ -1,0 +1,126 @@
+openapi: 3.0.1
+info:
+  title: Cydeo Application OpenAPI
+  description: Cydeo application API documentation
+  version: v1
+servers:
+- url: https://dev.cydeo.com
+  description: Dev Environment
+tags:
+- name: Account
+  description: Account CRUD Operations
+- name: User
+  description: User CRUD Operations
+paths:
+  /api/v1/users:
+    post:
+      tags:
+      - User
+      summary: Create a user
+      operationId: createUser
+      requestBody:
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        "201":
+          description: User created successfully (CREATED)
+          headers:
+            Connection:
+              description: keep-alive
+              style: simple
+          content:
+            application/xml: {}
+            application/json: {}
+  /api/v1/users/list:
+    get:
+      tags:
+      - User
+      summary: Retrieve all users
+      operationId: getAllUsers
+      responses:
+        "400":
+          description: Bad Request
+        "200":
+          description: Successfully retrieved users (OK)
+          content:
+            application/json: {}
+        "404":
+          description: Not Found
+  /api/v1/accounts:
+    get:
+      tags:
+      - Account
+      summary: Retrieve an account by id
+      operationId: getById
+      parameters:
+      - name: id
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AccountDTO'
+  /api/v1/accounts/list:
+    get:
+      tags:
+      - Account
+      summary: Retrieve all accounts
+      operationId: getAllAccounts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountDTO'
+components:
+  schemas:
+    AccountDTO:
+      type: object
+      properties:
+        address:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+        age:
+          type: integer
+          format: int32
+        postalCode:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserDTO'
+    UserDTO:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          writeOnly: true
+        username:
+          type: string
+        role:
+          type: string
+          enum:
+          - ADMIN
+          - USER
+        account:
+          $ref: '#/components/schemas/AccountDTO'
